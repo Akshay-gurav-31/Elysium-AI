@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,16 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Custom colors
+				forest: {
+					DEFAULT: '#4CAF50',
+					light: '#81C784', 
+					dark: '#2E3B2F'
+				},
+				calm: {
+					DEFAULT: '#29B6F6',
+					light: '#B3E5FC',
+					dark: '#0288D1'
 				}
 			},
 			borderRadius: {
@@ -89,6 +91,10 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
+			},
+			boxShadow: {
+				'soft': '0 4px 15px rgba(0, 0, 0, 0.05)',
+				'hover': '0 8px 30px rgba(0, 0, 0, 0.12)'
 			}
 		}
 	},
