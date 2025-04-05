@@ -16,6 +16,9 @@ import AppointmentForm from "@/components/appointments/AppointmentForm";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
+// Define the consultation type at the top level to ensure consistency
+type ConsultationType = 'chat' | 'video' | 'phone';
+
 // Mock data
 const mockDoctors = [
   {
@@ -59,7 +62,7 @@ const mockAppointments = [
     doctorImage: "https://randomuser.me/api/portraits/women/44.jpg",
     date: new Date(Date.now() + 86400000 * 2),
     timeSlot: "10:00 AM",
-    consultationType: "video" as const,
+    consultationType: "video" as ConsultationType,
     status: "confirmed"
   },
 ];
@@ -68,7 +71,7 @@ const Dashboard = () => {
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState("ai-chat");
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
-  const [consultationType, setConsultationType] = useState<'chat' | 'video' | 'phone'>('chat');
+  const [consultationType, setConsultationType] = useState<ConsultationType>('chat');
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [assessmentCompleted, setAssessmentCompleted] = useState(false);
   const [assessmentSeverity, setAssessmentSeverity] = useState<'low' | 'medium' | 'high'>('low');
@@ -95,7 +98,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleBookAppointment = (doctorId: string, type: 'chat' | 'video' | 'phone') => {
+  const handleBookAppointment = (doctorId: string, type: ConsultationType) => {
     setSelectedDoctor(doctorId);
     setConsultationType(type);
     setShowAppointmentForm(true);
