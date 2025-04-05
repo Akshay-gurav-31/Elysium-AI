@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
@@ -281,11 +282,13 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent>
                           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                            {appointment.consultationType === 'chat' ? (
+                            {appointment.consultationType === 'chat' && (
                               <MessageCircle className="h-4 w-4" />
-                            ) : appointment.consultationType === 'video' ? (
+                            )}
+                            {appointment.consultationType === 'video' && (
                               <Video className="h-4 w-4" />
-                            ) : (
+                            )}
+                            {appointment.consultationType === 'phone' && (
                               <Phone className="h-4 w-4" />
                             )}
                             <span>{appointment.consultationType.charAt(0).toUpperCase() + appointment.consultationType.slice(1)} consultation</span>
