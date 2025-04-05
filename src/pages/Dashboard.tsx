@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -56,7 +56,7 @@ const mockAppointments = [
     doctorId: "1",
     doctorName: "Dr. Sarah Johnson",
     doctorImage: "https://randomuser.me/api/portraits/women/44.jpg",
-    date: new Date(Date.now() + 86400000 * 2), // 2 days from now
+    date: new Date(Date.now() + 86400000 * 2),
     timeSlot: "10:00 AM",
     consultationType: "video" as const,
     status: "confirmed"
@@ -89,7 +89,6 @@ const Dashboard = () => {
         : "We've analyzed your responses and can connect you with support.",
     });
     
-    // Auto-switch to doctor tab for medium/high severity
     if (severity !== 'low') {
       setActiveTab('find-doctor');
     }
@@ -118,7 +117,6 @@ const Dashboard = () => {
     setActiveTab('appointments');
   };
 
-  // Find the selected doctor
   const doctor = mockDoctors.find(doc => doc.id === selectedDoctor);
 
   return (
