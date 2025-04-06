@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
-import { TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 
 import Header from "@/components/layout/Header";
@@ -75,33 +75,35 @@ const Dashboard = () => {
         <div className="flex flex-col gap-8">
           <DashboardHeader activeTab={activeTab} onTabChange={setActiveTab} />
           
-          <TabsContent value="ai-chat" className="space-y-4">
-            <AIChatTab 
-              assessmentCompleted={assessmentCompleted}
-              assessmentSeverity={assessmentSeverity}
-              onCompleteAssessment={handleAssessmentComplete}
-              onFindSupport={() => setActiveTab('find-doctor')}
-            />
-          </TabsContent>
-          
-          <TabsContent value="find-doctor">
-            <FindDoctorTab 
-              doctors={mockDoctors}
-              selectedDoctor={selectedDoctor}
-              consultationType={consultationType}
-              showAppointmentForm={showAppointmentForm}
-              onBookAppointment={handleBookAppointment}
-              onAppointmentSubmit={handleAppointmentSubmit}
-              onCancelAppointment={() => setShowAppointmentForm(false)}
-            />
-          </TabsContent>
-          
-          <TabsContent value="appointments">
-            <AppointmentsTab 
-              appointments={appointments}
-              onScheduleNew={() => setActiveTab('find-doctor')}
-            />
-          </TabsContent>
+          <Tabs defaultValue="ai-chat" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsContent value="ai-chat" className="mt-0">
+              <AIChatTab 
+                assessmentCompleted={assessmentCompleted}
+                assessmentSeverity={assessmentSeverity}
+                onCompleteAssessment={handleAssessmentComplete}
+                onFindSupport={() => setActiveTab('find-doctor')}
+              />
+            </TabsContent>
+            
+            <TabsContent value="find-doctor" className="mt-0">
+              <FindDoctorTab 
+                doctors={mockDoctors}
+                selectedDoctor={selectedDoctor}
+                consultationType={consultationType}
+                showAppointmentForm={showAppointmentForm}
+                onBookAppointment={handleBookAppointment}
+                onAppointmentSubmit={handleAppointmentSubmit}
+                onCancelAppointment={() => setShowAppointmentForm(false)}
+              />
+            </TabsContent>
+            
+            <TabsContent value="appointments" className="mt-0">
+              <AppointmentsTab 
+                appointments={appointments}
+                onScheduleNew={() => setActiveTab('find-doctor')}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       <Footer />

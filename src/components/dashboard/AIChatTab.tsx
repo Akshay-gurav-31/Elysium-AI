@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import ChatInterface from "@/components/chat/ChatInterface";
 import AIAssessmentPanel from "./AIAssessmentPanel";
 
@@ -20,7 +21,7 @@ const AIChatTab = ({
       <div className="lg:col-span-2">
         <ChatInterface onCompleteAssessment={onCompleteAssessment} />
       </div>
-      <div>
+      <div className="lg:col-span-1">
         <AIAssessmentPanel 
           assessmentCompleted={assessmentCompleted}
           assessmentSeverity={assessmentSeverity}
