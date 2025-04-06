@@ -12,7 +12,7 @@ import { Stethoscope, User } from "lucide-react";
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('patient');
+  const [userType, setUserType] = useState<'patient' | 'doctor'>('patient');
   const { login, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,7 +29,7 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
       
-      <Tabs defaultValue="patient" onValueChange={setUserType} className="w-full px-6">
+      <Tabs defaultValue="patient" onValueChange={(value) => setUserType(value as 'patient' | 'doctor')} className="w-full px-6">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="patient" className="flex items-center gap-2">
             <User className="h-4 w-4" />

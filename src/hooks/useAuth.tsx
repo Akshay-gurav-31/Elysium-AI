@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Demo credentials check for patient
       if (userType === 'patient' && (email === 'demo@example.com' || email === 'patient@example.com') && password === 'password') {
-        const patientUser = {
+        const patientUser: User = {
           id: '1',
           name: 'Demo Patient',
           email: email,
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       // Demo credentials check for doctor
       else if (userType === 'doctor' && email === 'doctor@example.com' && password === 'password') {
-        const doctorUser = {
+        const doctorUser: User = {
           id: '2',
           name: 'Dr. Jane Smith',
           email: 'doctor@example.com',
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const newUser = {
+      const newUser: User = {
         id: Date.now().toString(),
         name,
         email,
@@ -139,7 +139,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
       
       localStorage.setItem('mindfulGroveUser', JSON.stringify(newUser));
-      setUser(newUser as User);
+      setUser(newUser);
       
       toast({
         title: "Registration successful",
