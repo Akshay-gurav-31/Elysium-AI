@@ -6,15 +6,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Stethoscope, User } from "lucide-react";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('patient');
   const { login, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    await login(email, password, userType);
   };
 
   return (
@@ -25,6 +28,20 @@ const LoginForm = () => {
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>
+      
+      <Tabs defaultValue="patient" onValueChange={setUserType} className="w-full px-6">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="patient" className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            <span>Patient</span>
+          </TabsTrigger>
+          <TabsTrigger value="doctor" className="flex items-center gap-2">
+            <Stethoscope className="h-4 w-4" />
+            <span>Provider</span>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+      
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -54,12 +71,15 @@ const LoginForm = () => {
             />
           </div>
           <div className="text-sm text-muted-foreground">
-            For demo purposes, use: demo@example.com / password
+            {userType === 'patient' 
+              ? "For demo patient access, use: patient@example.com / password"
+              : "For demo provider access, use: doctor@example.com / password"
+            }
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Logging in..." : "Log in"}
+            {loading ? "Logging in..." : `Log in as ${userType === 'patient' ? 'Patient' : 'Provider'}`}
           </Button>
           <div className="text-center text-sm">
             Don't have an account?{' '}
