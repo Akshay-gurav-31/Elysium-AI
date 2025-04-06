@@ -2,6 +2,9 @@
 import React from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { Linkedin, Instagram } from "lucide-react";
 
 const About = () => {
   return (
@@ -108,6 +111,68 @@ const About = () => {
             </div>
           </div>
         </section>
+
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-forest-dark mb-8 text-center">Our Leadership Team</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card className="p-6 flex flex-col items-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  <AvatarFallback className="bg-primary/20 text-primary text-lg">SK</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-xl mb-1">Shreyash Kumar</h3>
+                <p className="text-center text-muted-foreground mb-3">Team Lead</p>
+                <div className="flex space-x-2 mt-2">
+                  <a href="https://www.linkedin.com/in/shreyash-kumar" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                    <Linkedin size={20} />
+                  </a>
+                </div>
+              </Card>
+              
+              <Card className="p-6 flex flex-col items-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  <AvatarFallback className="bg-primary/20 text-primary text-lg">VM</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-xl mb-1">Vardhan Mudhiraj</h3>
+                <p className="text-center text-muted-foreground mb-3">Team Lead</p>
+                <div className="flex space-x-2 mt-2">
+                  <a href="https://www.linkedin.com/in/vardhan-mudhiraj" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                    <Linkedin size={20} />
+                  </a>
+                </div>
+              </Card>
+              
+              <Card className="p-6 flex flex-col items-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  <AvatarFallback className="bg-primary/20 text-primary text-lg">MY</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-xl mb-1">Meghana Yegireddi</h3>
+                <p className="text-center text-muted-foreground mb-3">Team Lead</p>
+                <div className="flex space-x-2 mt-2">
+                  <a href="https://www.linkedin.com/in/meghana-yegireddi" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                    <Linkedin size={20} />
+                  </a>
+                </div>
+              </Card>
+              
+              <Card className="p-6 flex flex-col items-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  <AvatarFallback className="bg-primary/20 text-primary text-lg">AG</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-xl mb-1">Akshay Gurav</h3>
+                <p className="text-center text-muted-foreground mb-3">Team Lead</p>
+                <div className="flex space-x-2 mt-2">
+                  <a href="https://www.linkedin.com/in/akshay--gurav/" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                    <Linkedin size={20} />
+                  </a>
+                  <a href="https://www.instagram.com/akshay._.gurav" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                    <Instagram size={20} />
+                  </a>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
@@ -115,3 +180,4 @@ const About = () => {
 };
 
 export default About;
+
