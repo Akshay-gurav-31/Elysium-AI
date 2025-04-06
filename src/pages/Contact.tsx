@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Header } from "@/components/layout/Header";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
