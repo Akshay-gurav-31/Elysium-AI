@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -13,7 +14,11 @@ const MedicalHistorySection = () => {
   const { toast } = useToast();
   
   const [medicalHistory, setMedicalHistory] = useState<string>(
-    patientData?.medicalHistory ? String(patientData.medicalHistory) : ""
+    patientData?.medicalHistory ? 
+    (typeof patientData.medicalHistory === 'string' ? 
+      patientData.medicalHistory : 
+      JSON.stringify(patientData.medicalHistory))
+    : ""
   );
   
   const handleSaveMedicalHistory = () => {

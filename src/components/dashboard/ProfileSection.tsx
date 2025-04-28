@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -46,7 +47,7 @@ const ProfileSection = () => {
     updateUserProfile({
       name: profileForm.name,
       phone: profileForm.phone,
-      age: Number(profileForm.age),
+      age: profileForm.age === "" ? 0 : Number(profileForm.age), // Ensure age is always a number
       address: profileForm.address,
       bio: profileForm.bio
     });
