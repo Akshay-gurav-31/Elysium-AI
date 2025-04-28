@@ -1,7 +1,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface User {
   id: string;
@@ -39,13 +39,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   // Check if user is already logged in
   useEffect(() => {
-    const storedUser = localStorage.getItem('mindfulGroveUser');
-    
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    try {
+      const storedUser = localStorage.getItem('mindfulGroveUser');
+      
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error("Error loading user from localStorage:", error);
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   }, []);
   
   // For demo purposes, we're using localStorage
