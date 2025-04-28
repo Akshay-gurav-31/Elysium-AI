@@ -3,24 +3,62 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-// Define the User type with type property
+// Extended User interface with all required properties
 interface User {
   id: string;
   name: string;
   email: string;
   type: "doctor" | "patient";
   avatar?: string;
+  phone?: string;
+  age?: number;
+  address?: string;
+  bio?: string;
   specialty?: string;
   licenseNumber?: string;
+  specialization?: string;
+  profileImage?: string;
 }
 
+// Define appointment type
+interface Appointment {
+  id: string;
+  doctorId: string;
+  patientId: string;
+  doctorName: string;
+  patientName: string;
+  date: Date;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  notes?: string;
+}
+
+// Define patient data type
+interface PatientData {
+  appointments: Appointment[];
+  medicalHistory?: any[];
+  medicalRecords?: any[];
+}
+
+// Define doctor data type
+interface DoctorData {
+  appointments: Appointment[];
+  patients?: any[];
+  requests?: any[];
+}
+
+// Define the context type with all required properties
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  patientData?: PatientData;
+  doctorData?: DoctorData;
   login: (email: string, password: string, userType?: "doctor" | "patient") => Promise<void>;
   register: (name: string, email: string, password: string, userType?: "doctor" | "patient", doctorDetails?: {specialty: string, licenseNumber: string}) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  updateUserProfile: (userData: Partial<User>) => void;
+  addAppointment: (appointment: Appointment) => void;
+  cancelAppointment: (appointmentId: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +66,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [patientData, setPatientData] = useState<PatientData>({ appointments: [] });
+  const [doctorData, setDoctorData] = useState<DoctorData>({ appointments: [] });
   const navigate = useNavigate();
   
   // Check if user is already logged in
@@ -44,6 +84,53 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   }, []);
+
+  // Update user profile information
+  const updateUserProfile = (userData: Partial<User>) => {
+    if (!user) return;
+    
+    const updatedUser = { ...user, ...userData };
+    localStorage.setItem('mindfulGroveUser', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    
+    toast("Profile Updated", {
+      description: "Your profile information has been saved."
+    });
+  };
+  
+  // Add an appointment
+  const addAppointment = (appointment: Appointment) => {
+    if (user?.type === 'patient') {
+      setPatientData(prev => ({
+        ...prev,
+        appointments: [...prev.appointments, appointment]
+      }));
+    } else if (user?.type === 'doctor') {
+      setDoctorData(prev => ({
+        ...prev,
+        appointments: [...prev.appointments, appointment]
+      }));
+    }
+  };
+  
+  // Cancel an appointment
+  const cancelAppointment = (appointmentId: string) => {
+    if (user?.type === 'patient') {
+      setPatientData(prev => ({
+        ...prev,
+        appointments: prev.appointments.map(apt => 
+          apt.id === appointmentId ? {...apt, status: 'cancelled' as const} : apt
+        )
+      }));
+    } else if (user?.type === 'doctor') {
+      setDoctorData(prev => ({
+        ...prev,
+        appointments: prev.appointments.map(apt => 
+          apt.id === appointmentId ? {...apt, status: 'cancelled' as const} : apt
+        )
+      }));
+    }
+  };
   
   // For demo purposes, we're using localStorage
   // In production, this would connect to a backend auth system
@@ -61,11 +148,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           name: 'Demo Patient',
           email: email,
           type: 'patient',
-          avatar: '/placeholder.svg'
+          avatar: '/placeholder.svg',
+          phone: '555-123-4567',
+          age: 35,
+          address: '123 Main St, Anytown USA',
+          bio: 'I am a patient looking for mental health support.'
         };
         
         localStorage.setItem('mindfulGroveUser', JSON.stringify(patientUser));
         setUser(patientUser);
+        
+        // Set some demo patient data
+        setPatientData({
+          appointments: [
+            {
+              id: 'apt-1',
+              doctorId: 'dr-smith',
+              patientId: '1',
+              doctorName: 'Dr. Smith',
+              patientName: 'Demo Patient',
+              date: new Date(Date.now() + 86400000), // tomorrow
+              status: 'scheduled',
+              notes: 'Initial consultation'
+            }
+          ]
+        });
         
         toast("Login successful", {
           description: "Welcome to Mindful Grove!"
@@ -82,11 +189,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           type: 'doctor',
           specialty: 'Psychiatry',
           licenseNumber: 'MED12345',
-          avatar: '/placeholder.svg'
+          avatar: '/placeholder.svg',
+          phone: '555-987-6543',
+          specialization: 'Psychiatry',
+          bio: 'Board-certified psychiatrist with 10 years of experience in mental health care.'
         };
         
         localStorage.setItem('mindfulGroveUser', JSON.stringify(doctorUser));
         setUser(doctorUser);
+        
+        // Set some demo doctor data
+        setDoctorData({
+          appointments: [
+            {
+              id: 'apt-2',
+              doctorId: '2',
+              patientId: 'p789',
+              doctorName: 'Dr. Jane Smith',
+              patientName: 'Michael Brown',
+              date: new Date(Date.now() + 172800000), // day after tomorrow
+              status: 'scheduled',
+              notes: 'Follow-up appointment'
+            }
+          ]
+        });
         
         toast("Login successful", {
           description: "Welcome to Mindful Grove, Dr. Smith!"
@@ -125,12 +251,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         avatar: '/placeholder.svg',
         ...(userType === 'doctor' && doctorDetails ? {
           specialty: doctorDetails.specialty,
-          licenseNumber: doctorDetails.licenseNumber
+          licenseNumber: doctorDetails.licenseNumber,
+          specialization: doctorDetails.specialty
         } : {})
       };
       
       localStorage.setItem('mindfulGroveUser', JSON.stringify(newUser));
       setUser(newUser);
+      
+      // Initialize empty data structure based on user type
+      if (userType === 'patient') {
+        setPatientData({ appointments: [] });
+      } else {
+        setDoctorData({ appointments: [] });
+      }
       
       toast("Registration successful", {
         description: userType === 'doctor'
@@ -152,6 +286,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('mindfulGroveUser');
     setUser(null);
+    setPatientData({ appointments: [] });
+    setDoctorData({ appointments: [] });
     toast("Logged out", {
       description: "You have been successfully logged out."
     });
@@ -165,7 +301,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       login, 
       register, 
       logout,
-      isAuthenticated: !!user
+      isAuthenticated: !!user,
+      patientData,
+      doctorData,
+      updateUserProfile,
+      addAppointment,
+      cancelAppointment
     }}>
       {children}
     </AuthContext.Provider>
