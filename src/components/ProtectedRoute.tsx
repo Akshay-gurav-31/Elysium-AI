@@ -5,31 +5,27 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredUserType?: 'patient' | 'doctor' | 'both';
+  requiredUserType?: "doctor" | "patient";
 }
 
-const ProtectedRoute = ({ children, requiredUserType = 'both' }: ProtectedRouteProps) => {
-  const { isAuthenticated, userType } = useAuth();
+const ProtectedRoute = ({ children, requiredUserType }: ProtectedRouteProps) => {
+  const { isAuthenticated, user } = useAuth();
 
-  // Not authenticated - redirect to login
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Check user type requirement
-  if (requiredUserType !== 'both' && userType !== requiredUserType) {
-    // Redirect doctor to doctor dashboard if trying to access patient pages
-    if (userType === 'doctor') {
+  // If a specific user type is required, check if the user has that type
+  if (requiredUserType && user?.type !== requiredUserType) {
+    // Redirect doctors to their dashboard if they try to access patient routes
+    if (user?.type === "doctor") {
       return <Navigate to="/doctor-dashboard" replace />;
     }
     
-    // Redirect patient to patient dashboard if trying to access doctor pages
-    if (userType === 'patient') {
-      return <Navigate to="/dashboard" replace />;
-    }
+    // Redirect patients to their dashboard if they try to access doctor routes
+    return <Navigate to="/patient-dashboard" replace />;
   }
 
-  // User is authenticated and has correct user type
   return <>{children}</>;
 };
 
