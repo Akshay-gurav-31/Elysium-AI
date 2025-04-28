@@ -53,16 +53,25 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors
-				forest: {
-					DEFAULT: '#4CAF50',
-					light: '#81C784', 
-					dark: '#2E3B2F'
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))'
 				},
-				calm: {
-					DEFAULT: '#29B6F6',
-					light: '#B3E5FC',
-					dark: '#0288D1'
+				// Custom colors for Mindful Grove
+				mindful: {
+					primary: '#4F7942', // Forest green
+					secondary: '#78A678', // Sage green
+					accent: '#D4E7C5', // Light mint
+					highlight: '#E8F3D6', // Pale green
+					blue: '#A5C1D5', // Calming blue
+					warmNeutral: '#F5F1E8', // Warm cream
+					darkText: '#2D3A3A', // Dark teal-gray
 				}
 			},
 			borderRadius: {
@@ -86,15 +95,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'fade-up': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'fade-up': 'fade-up 0.5s ease-out'
 			},
-			boxShadow: {
-				'soft': '0 4px 15px rgba(0, 0, 0, 0.05)',
-				'hover': '0 8px 30px rgba(0, 0, 0, 0.12)'
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				display: ['Playfair Display', 'serif']
 			}
 		}
 	},
