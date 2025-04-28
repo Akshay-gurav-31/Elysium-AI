@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -16,7 +15,7 @@ const ProfileSection = () => {
     name: user?.name || "",
     email: user?.email || "",
     phone: user?.phone || "",
-    age: user?.age || "",
+    age: user?.age ? Number(user.age) : "",
     address: user?.address || "",
     bio: user?.bio || ""
   });
@@ -27,7 +26,7 @@ const ProfileSection = () => {
         name: user.name || "",
         email: user.email || "",
         phone: user.phone || "",
-        age: user.age || "",
+        age: user.age ? Number(user.age) : "",
         address: user.address || "",
         bio: user.bio || ""
       });
@@ -47,7 +46,7 @@ const ProfileSection = () => {
     updateUserProfile({
       name: profileForm.name,
       phone: profileForm.phone,
-      age: profileForm.age,
+      age: Number(profileForm.age),
       address: profileForm.address,
       bio: profileForm.bio
     });

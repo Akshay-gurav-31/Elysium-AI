@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -14,7 +12,9 @@ const MedicalHistorySection = () => {
   const { patientData } = useAuth();
   const { toast } = useToast();
   
-  const [medicalHistory, setMedicalHistory] = useState<string>(patientData?.medicalHistory || "");
+  const [medicalHistory, setMedicalHistory] = useState<string>(
+    patientData?.medicalHistory ? String(patientData.medicalHistory) : ""
+  );
   
   const handleSaveMedicalHistory = () => {
     if (patientData) {
