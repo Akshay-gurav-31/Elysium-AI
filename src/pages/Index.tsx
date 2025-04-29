@@ -12,7 +12,7 @@ const Index = () => {
   const images = [
     "/images/doctors/dr.png",
     "/images/doctors/dr1.png",
-    "/images/doctors/dr2.png",
+    "/images/doctors/dr2.jpg",
     "/images/doctors/dr3.png",
   ];
 
