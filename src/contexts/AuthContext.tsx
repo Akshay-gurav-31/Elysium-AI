@@ -1,9 +1,8 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-// Extended User interface with all required properties
+// Extended User interface
 interface User {
   id: string;
   name: string;
@@ -19,19 +18,18 @@ interface User {
   specialization?: string;
   profileImage?: string;
 }
-
-// Define appointment type
-interface Appointment {
+export interface Appointment {
   id: string;
   doctorId: string;
   patientId: string;
   doctorName: string;
   patientName: string;
   date: Date;
-  status: 'scheduled' | 'completed' | 'cancelled';
+  time?: string;
+  type?: 'video' | 'in-person';
+  status: 'scheduled' | 'completed' | 'cancelled' | 'confirmed' | 'pending';
   notes?: string;
 }
-
 // Define patient data type
 interface PatientData {
   appointments: Appointment[];
@@ -46,7 +44,7 @@ interface DoctorData {
   requests?: any[];
 }
 
-// Define the context type with all required properties
+// Define the context type
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -69,163 +67,139 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [patientData, setPatientData] = useState<PatientData>({ appointments: [] });
   const [doctorData, setDoctorData] = useState<DoctorData>({ appointments: [] });
   const navigate = useNavigate();
-  
-  // Check if user is already logged in
+
+  // Load user and data from localStorage
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('mindfulGroveUser');
-      
+      const storedPatientData = localStorage.getItem('mindfulGrovePatientData');
+      const storedDoctorData = localStorage.getItem('mindfulGroveDoctorData');
+
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
+      if (storedPatientData) {
+        const parsed = JSON.parse(storedPatientData);
+        setPatientData({
+          ...parsed,
+          appointments: parsed.appointments.map((appt: any) => ({
+            ...appt,
+            date: new Date(appt.date),
+          })),
+        });
+      }
+      if (storedDoctorData) {
+        const parsed = JSON.parse(storedDoctorData);
+        setDoctorData({
+          ...parsed,
+          appointments: parsed.appointments.map((appt: any) => ({
+            ...appt,
+            date: new Date(appt.date),
+          })),
+        });
+      }
     } catch (error) {
-      console.error("Error loading user from localStorage:", error);
+      console.error("Error loading data from localStorage:", error);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Update user profile information
+  // Save patientData and doctorData to localStorage on change
+  useEffect(() => {
+    if (patientData.appointments.length > 0) {
+      localStorage.setItem('mindfulGrovePatientData', JSON.stringify(patientData));
+    }
+  }, [patientData]);
+
+  useEffect(() => {
+    if (doctorData.appointments.length > 0) {
+      localStorage.setItem('mindfulGroveDoctorData', JSON.stringify(doctorData));
+    }
+  }, [doctorData]);
+
+  // Update user profile
   const updateUserProfile = (userData: Partial<User>) => {
     if (!user) return;
-    
     const updatedUser = { ...user, ...userData };
     localStorage.setItem('mindfulGroveUser', JSON.stringify(updatedUser));
     setUser(updatedUser);
-    
     toast("Profile Updated", {
       description: "Your profile information has been saved."
     });
   };
-  
+
   // Add an appointment
   const addAppointment = (appointment: Appointment) => {
     if (user?.type === 'patient') {
       setPatientData(prev => ({
         ...prev,
-        appointments: [...prev.appointments, appointment]
+        appointments: [...prev.appointments, appointment],
       }));
     } else if (user?.type === 'doctor') {
       setDoctorData(prev => ({
         ...prev,
-        appointments: [...prev.appointments, appointment]
+        appointments: [...prev.appointments, appointment],
       }));
     }
   };
-  
+
   // Cancel an appointment
   const cancelAppointment = (appointmentId: string) => {
     if (user?.type === 'patient') {
       setPatientData(prev => ({
         ...prev,
         appointments: prev.appointments.map(apt => 
-          apt.id === appointmentId ? {...apt, status: 'cancelled' as const} : apt
-        )
+          apt.id === appointmentId ? { ...apt, status: 'cancelled' as const } : apt
+        ),
       }));
     } else if (user?.type === 'doctor') {
       setDoctorData(prev => ({
         ...prev,
         appointments: prev.appointments.map(apt => 
-          apt.id === appointmentId ? {...apt, status: 'cancelled' as const} : apt
-        )
+          apt.id === appointmentId ? { ...apt, status: 'cancelled' as const } : apt
+        ),
       }));
     }
   };
-  
-  // For demo purposes, we're using localStorage
-  // In production, this would connect to a backend auth system
+
   const login = async (email: string, password: string, userType: "doctor" | "patient" = 'patient') => {
     setLoading(true);
-    
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Demo credentials check for patient
-      if (userType === 'patient' && (email === 'demo@example.com' || email === 'patient@example.com') && password === 'password') {
-        const patientUser: User = {
-          id: '1',
-          name: 'Demo Patient',
-          email: email,
-          type: 'patient',
-          avatar: '/placeholder.svg',
-          phone: '555-123-4567',
-          age: 35,
-          address: '123 Main St, Anytown USA',
-          bio: 'I am a patient looking for mental health support.'
-        };
-        
-        localStorage.setItem('mindfulGroveUser', JSON.stringify(patientUser));
-        setUser(patientUser);
-        
-        // Set some demo patient data
+      const user: User = {
+        id: Date.now().toString(),
+        name: userType === 'doctor' ? `Dr. ${email.split('@')[0]}` : email.split('@')[0],
+        email,
+        type: userType,
+        avatar: '/placeholder.svg',
+        phone: '555-000-0000',
+        age: userType === 'patient' ? 30 : undefined,
+        address: userType === 'patient' ? '123 Grove St, Mindful City' : undefined,
+        bio: userType === 'patient' ? 'Patient seeking mental health support.' : 'Healthcare professional.',
+        specialty: userType === 'doctor' ? 'General Practice' : undefined,
+        licenseNumber: userType === 'doctor' ? `LIC-${Date.now()}` : undefined,
+        specialization: userType === 'doctor' ? 'General Practice' : undefined,
+      };
+      localStorage.setItem('mindfulGroveUser', JSON.stringify(user));
+      setUser(user);
+      if (userType === 'patient') {
         setPatientData({
-          appointments: [
-            {
-              id: 'apt-1',
-              doctorId: 'dr-smith',
-              patientId: '1',
-              doctorName: 'Dr. Smith',
-              patientName: 'Demo Patient',
-              date: new Date(Date.now() + 86400000), // tomorrow
-              status: 'scheduled',
-              notes: 'Initial consultation'
-            }
-          ]
+          appointments: [],
+          medicalHistory: [],
+          medicalRecords: [],
         });
-        
-        toast("Login successful", {
-          description: "Welcome to Mindful Grove!"
-        });
-        
-        navigate('/patient-dashboard');
-      }
-      // Demo credentials check for doctor
-      else if (userType === 'doctor' && email === 'doctor@example.com' && password === 'password') {
-        const doctorUser: User = {
-          id: '2',
-          name: 'Dr. Jane Smith',
-          email: 'doctor@example.com',
-          type: 'doctor',
-          specialty: 'Psychiatry',
-          licenseNumber: 'MED12345',
-          avatar: '/placeholder.svg',
-          phone: '555-987-6543',
-          specialization: 'Psychiatry',
-          bio: 'Board-certified psychiatrist with 10 years of experience in mental health care.'
-        };
-        
-        localStorage.setItem('mindfulGroveUser', JSON.stringify(doctorUser));
-        setUser(doctorUser);
-        
-        // Set some demo doctor data
-        setDoctorData({
-          appointments: [
-            {
-              id: 'apt-2',
-              doctorId: '2',
-              patientId: 'p789',
-              doctorName: 'Dr. Jane Smith',
-              patientName: 'Michael Brown',
-              date: new Date(Date.now() + 172800000), // day after tomorrow
-              status: 'scheduled',
-              notes: 'Follow-up appointment'
-            }
-          ]
-        });
-        
-        toast("Login successful", {
-          description: "Welcome to Mindful Grove, Dr. Smith!"
-        });
-        
-        navigate('/doctor-dashboard');
       } else {
-        toast("Login failed", {
-          description: userType === 'patient' 
-            ? "Invalid email or password. Try patient@example.com / password" 
-            : "Invalid email or password. Try doctor@example.com / password"
+        setDoctorData({
+          appointments: [],
+          patients: [],
+          requests: [],
         });
       }
+      toast("Login successful", {
+        description: `Welcome to Mindful Grove${userType === 'doctor' ? ', Dr. ' + email.split('@')[0] : ''}!`
+      });
+      navigate(userType === 'doctor' ? '/DoctorDashboard' : '/PatientDashboard');
     } catch (error) {
       toast("Login error", {
         description: "An unexpected error occurred. Please try again."
@@ -235,14 +209,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-  
+
   const register = async (name: string, email: string, password: string, userType: "doctor" | "patient" = 'patient', doctorDetails?: {specialty: string, licenseNumber: string}) => {
     setLoading(true);
-    
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const newUser: User = {
         id: Date.now().toString(),
         name,
@@ -255,24 +226,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           specialization: doctorDetails.specialty
         } : {})
       };
-      
       localStorage.setItem('mindfulGroveUser', JSON.stringify(newUser));
       setUser(newUser);
-      
-      // Initialize empty data structure based on user type
       if (userType === 'patient') {
         setPatientData({ appointments: [] });
       } else {
         setDoctorData({ appointments: [] });
       }
-      
       toast("Registration successful", {
         description: userType === 'doctor'
           ? "Your provider account has been created! Please wait for verification."
           : "Your account has been created!"
       });
-      
-      navigate(userType === 'doctor' ? '/doctor-dashboard' : '/patient-dashboard');
+      navigate(userType === 'doctor' ? '/DoctorDashboard' : '/PatientDashboard');
     } catch (error) {
       toast("Registration error", {
         description: "An unexpected error occurred. Please try again."
@@ -282,9 +248,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-  
+
   const logout = () => {
     localStorage.removeItem('mindfulGroveUser');
+    localStorage.removeItem('mindfulGrovePatientData');
+    localStorage.removeItem('mindfulGroveDoctorData');
     setUser(null);
     setPatientData({ appointments: [] });
     setDoctorData({ appointments: [] });
@@ -293,7 +261,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     navigate('/');
   };
-  
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -315,10 +283,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  
   return context;
 };
