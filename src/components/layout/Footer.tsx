@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
               <img
-                src="public/images/ui/logo.png"
+                src="/images/ui/logo.png"
                 alt="Elysium AI Logo"
                 className="w-8 h-8"
               />
