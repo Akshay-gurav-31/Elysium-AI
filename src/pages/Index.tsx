@@ -338,7 +338,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Produced professional demo presentation and research work 
+                  Produced professional demo presentation and research work with Database Management 
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/sai-vardhan-ameenla/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
