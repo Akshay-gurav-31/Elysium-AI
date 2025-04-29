@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,10 +10,11 @@ const Index = () => {
   // State for managing the current image index
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
-    "src/img/dr.png",
-    "src/img/dr1.png",
-    "src/img/dr2.png",
-    "src/img/dr3.png",
+    "/images/doctors/dr.png",
+    "/images/doctors/dr1.png",
+    "/images/doctors/dr2.png",
+    "/images/doctors/dr3.png",
+    "/images/doctors/dr4.png",
   ];
 
   // Effect for cycling through images every 20 seconds
