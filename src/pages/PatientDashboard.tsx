@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,53 +10,35 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { User, Settings, Calendar, Clock, FileText, LogOut, Plus, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import type { Appointment } from "@/contexts/AuthContext";
 
 
 const PatientDashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, patientData, updateUserProfile, addAppointment, cancelAppointment } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("appointments");
   const [profileForm, setProfileForm] = useState({
     name: user?.name || "Patient Name",
     email: user?.email || "patient@example.com",
-    phone: "+91 9876543210",
-    age: "28",
+    phone: user?.phone || "+91 9876543210",
+    age: user?.age?.toString() || "28",
     gender: "Male",
-    bio: ""
+    bio: user?.bio || "",
   });
 
-  // Mock data for appointments
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      doctorName: "Dr. Raj Patil",
-      date: "2023-06-15",
-      time: "10:00 AM",
-      type: "Video Consultation",
-      status: "confirmed",
-      notes: "Follow-up for anxiety management"
-    },
-    {
-      id: 2,
-      doctorName: "Dr. Priya Sharma",
-      date: "2023-06-17",
-      time: "2:30 PM",
-      type: "In-Person",
-      status: "pending",
-      notes: "Initial consultation"
-    }
-  ]);
+  // Use patientData.appointments directly, with fallback to mock data
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   // Mock doctors list
-  const [doctors, setDoctors] = useState([
+  const [doctors] = useState([
     {
       id: 1,
       name: "Dr. Raj Patil",
       specialization: "Psychiatrist",
       experience: "10 years",
       rating: "4.8",
-      available: ["Mon", "Wed", "Fri"]
+      available: ["Mon", "Wed", "Fri"],
     },
     {
       id: 2,
@@ -64,8 +46,8 @@ const PatientDashboard = () => {
       specialization: "Clinical Psychologist",
       experience: "7 years",
       rating: "4.9",
-      available: ["Tue", "Thu", "Sat"]
-    }
+      available: ["Tue", "Thu", "Sat"],
+    },
   ]);
 
   const [newAppointment, setNewAppointment] = useState({
@@ -73,74 +55,132 @@ const PatientDashboard = () => {
     date: "",
     time: "",
     notes: "",
-    type: "video"
+    type: "video",
   });
 
-  const handleProfileChange = (e) => {
+  // Sync appointments from patientData, converting date strings to Date objects
+  useEffect(() => {
+    console.log('PatientDashboard: Rendered with user:', user, 'patientData:', patientData);
+    if (!user) {
+      console.log('PatientDashboard: No user, redirecting to /login');
+      navigate('/login', { replace: true });
+    } else if (user.type !== 'patient') {
+      console.log('PatientDashboard: User is not a patient, redirecting to /account');
+      navigate('/account', { replace: true });
+    } else {
+      // Initialize appointments from patientData or mock data
+      const initialAppointments = patientData?.appointments?.length
+        ? patientData.appointments.map(appt => ({
+            ...appt,
+            date: appt.date instanceof Date ? appt.date : new Date(appt.date),
+          }))
+        : [
+            {
+              id: '1',
+              doctorName: "Dr. Raj Patil",
+              patientName: user?.name || "Patient Name",
+              doctorId: 'dr1',
+              patientId: user?.id || 'p1',
+              date: new Date("2023-06-15"),
+              status: "scheduled" as const,
+              notes: "Follow-up for anxiety management",
+            },
+            {
+              id: '2',
+              doctorName: "Dr. Priya Sharma",
+              patientName: user?.name || "Patient Name",
+              doctorId: 'dr2',
+              patientId: user?.id || 'p1',
+              date: new Date("2023-06-17"),
+              status: "scheduled" as const,
+              notes: "Initial consultation",
+            },
+          ];
+      setAppointments(initialAppointments);
+    }
+  }, [user, patientData, navigate]);
+
+  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setProfileForm(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleProfileSubmit = (e) => {
+  const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    updateUserProfile({
+      name: profileForm.name,
+      phone: profileForm.phone,
+      age: parseInt(profileForm.age) || undefined,
+      bio: profileForm.bio,
+    });
     toast({
       title: "Profile Updated",
-      description: "Your profile information has been saved."
+      description: "Your profile information has been saved.",
     });
+    console.log('PatientDashboard: Profile updated:', profileForm);
   };
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login", { replace: true });
+    console.log('PatientDashboard: User logged out');
   };
 
-  const handleCancelAppointment = (id) => {
-    setAppointments(prev => prev.filter(appt => appt.id !== id));
+  const handleCancelAppointment = (id: string) => {
+    cancelAppointment(id); // Use AuthContext's cancelAppointment
     toast({
       title: "Appointment Cancelled",
-      description: "Your appointment has been cancelled successfully."
+      description: "Your appointment has been cancelled successfully.",
     });
+    console.log('PatientDashboard: Appointment cancelled:', id);
   };
 
-  const handleNewAppointmentChange = (e) => {
+  const handleNewAppointmentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setNewAppointment(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleBookAppointment = (e) => {
+  const handleBookAppointment = (e: React.FormEvent) => {
     e.preventDefault();
     const doctor = doctors.find(doc => doc.id === parseInt(newAppointment.doctorId));
-    
-    const newAppt = {
-      id: appointments.length + 1,
-      doctorName: doctor.name,
-      date: newAppointment.date,
-      time: newAppointment.time,
-      type: newAppointment.type === "video" ? "Video Consultation" : "In-Person",
-      status: "pending",
-      notes: newAppointment.notes
+
+    const newAppt: Appointment = {
+      id: Date.now().toString(),
+      doctorName: doctor?.name || "Unknown Doctor",
+      patientName: user?.name || "Patient Name",
+      doctorId: newAppointment.doctorId,
+      patientId: user?.id || 'p1',
+      date: new Date(newAppointment.date),
+      status: "scheduled" as const,
+      notes: newAppointment.notes,
     };
-    
-    setAppointments(prev => [...prev, newAppt]);
+
+    addAppointment(newAppt); // Use AuthContext's addAppointment
     setNewAppointment({
       doctorId: "",
       date: "",
       time: "",
       notes: "",
-      type: "video"
+      type: "video",
     });
-    
+
     toast({
       title: "Appointment Booked",
-      description: "Your appointment request has been submitted successfully."
+      description: "Your appointment request has been submitted successfully.",
     });
+    console.log('PatientDashboard: New appointment booked:', newAppt);
   };
+
+  if (!user || user.type !== 'patient') {
+    console.log('PatientDashboard: Not rendering due to no user or wrong user type:', user);
+    return null;
+  }
 
   return (
     <MainLayout>
@@ -153,7 +193,7 @@ const PatientDashboard = () => {
                 <CardContent className="p-4">
                   <div className="flex flex-col items-center text-center">
                     <div className="w-24 h-24 rounded-full bg-neutral-700 flex items-center justify-center text-3xl text-mindful-primary mb-4">
-                      {user?.name ? user.name.charAt(0).toUpperCase() : "P"}
+                      {user.name ? user.name.charAt(0).toUpperCase() : "P"}
                     </div>
                     <h3 className="text-lg font-semibold">{profileForm.name}</h3>
                     <p className="text-sm text-gray-400">{profileForm.email}</p>
@@ -253,7 +293,7 @@ const PatientDashboard = () => {
                         <TabsContent value="upcoming">
                           <div className="space-y-4 mt-4">
                             {appointments
-                              .filter(appt => appt.status === "confirmed" || appt.status === "pending")
+                              .filter(appt => appt.status === "scheduled")
                               .map(appt => (
                                 <Card key={appt.id} className="dark-card">
                                   <CardContent className="p-4">
@@ -261,20 +301,17 @@ const PatientDashboard = () => {
                                       <div>
                                         <h4 className="font-medium">{appt.doctorName}</h4>
                                         <p className="text-sm text-gray-400">
-                                          {new Date(appt.date).toLocaleDateString()} • {appt.time} • {appt.type}
+                                          {appt.date.toLocaleDateString()}
                                         </p>
                                         {appt.notes && (
                                           <p className="text-sm mt-2 text-gray-300">{appt.notes}</p>
                                         )}
                                       </div>
                                       <div className="flex gap-2">
-                                        <span className={`px-2 py-1 rounded text-xs ${
-                                          appt.status === "confirmed" ? "bg-green-900 text-green-300" :
-                                          "bg-yellow-900 text-yellow-300"
-                                        }`}>
+                                        <span className="px-2 py-1 rounded text-xs bg-green-900 text-green-300">
                                           {appt.status}
                                         </span>
-                                        {appt.status === "confirmed" && (
+                                        {appt.status === "scheduled" && (
                                           <Button 
                                             variant="outline" 
                                             size="sm"
@@ -295,18 +332,79 @@ const PatientDashboard = () => {
                                   </CardContent>
                                 </Card>
                               ))}
+                            {appointments.filter(appt => appt.status === "scheduled").length === 0 && (
+                              <div className="text-center py-8">
+                                <p className="text-gray-400">No upcoming appointments</p>
+                              </div>
+                            )}
                           </div>
                         </TabsContent>
 
                         <TabsContent value="past">
-                          <div className="text-center py-8">
-                            <p className="text-gray-400">No past appointments found</p>
+                          <div className="space-y-4 mt-4">
+                            {appointments
+                              .filter(appt => appt.status === "completed")
+                              .map(appt => (
+                                <Card key={appt.id} className="dark-card">
+                                  <CardContent className="p-4">
+                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                      <div>
+                                        <h4 className="font-medium">{appt.doctorName}</h4>
+                                        <p className="text-sm text-gray-400">
+                                          {appt.date.toLocaleDateString()}
+                                        </p>
+                                        {appt.notes && (
+                                          <p className="text-sm mt-2 text-gray-300">{appt.notes}</p>
+                                        )}
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <span className="px-2 py-1 rounded text-xs bg-blue-900 text-blue-300">
+                                          {appt.status}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            {appointments.filter(appt => appt.status === "completed").length === 0 && (
+                              <div className="text-center py-8">
+                                <p className="text-gray-400">No past appointments found</p>
+                              </div>
+                            )}
                           </div>
                         </TabsContent>
 
                         <TabsContent value="cancelled">
-                          <div className="text-center py-8">
-                            <p className="text-gray-400">No cancelled appointments</p>
+                          <div className="space-y-4 mt-4">
+                            {appointments
+                              .filter(appt => appt.status === "cancelled")
+                              .map(appt => (
+                                <Card key={appt.id} className="dark-card">
+                                  <CardContent className="p-4">
+                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                      <div>
+                                        <h4 className="font-medium">{appt.doctorName}</h4>
+                                        <p className="text-sm text-gray-400">
+                                          {appt.date.toLocaleDateString()}
+                                        </p>
+                                        {appt.notes && (
+                                          <p className="text-sm mt-2 text-gray-300">{appt.notes}</p>
+                                        )}
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <span className="px-2 py-1 rounded text-xs bg-red-900 text-red-300">
+                                          {appt.status}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            {appointments.filter(appt => appt.status === "cancelled").length === 0 && (
+                              <div className="text-center py-8">
+                                <p className="text-gray-400">No cancelled appointments</p>
+                              </div>
+                            )}
                           </div>
                         </TabsContent>
                       </Tabs>
@@ -463,7 +561,7 @@ const PatientDashboard = () => {
                           <div className="flex justify-between items-center">
                             <div>
                               <h4 className="font-medium">Dr. Raj Patil</h4>
-                              <p className="text-sm text-gray-400">May 15, 2023 • Video Consultation</p>
+                              <p className="text-sm text-gray-400">May 15, 2023</p>
                             </div>
                             <span className="px-2 py-1 rounded text-xs bg-green-900 text-green-300">
                               Completed
@@ -473,13 +571,11 @@ const PatientDashboard = () => {
                         <CardContent className="p-4 pt-0">
                           <h5 className="text-sm font-medium mb-1">Diagnosis:</h5>
                           <p className="text-sm text-gray-300 mb-3">Generalized Anxiety Disorder</p>
-                          
                           <h5 className="text-sm font-medium mb-1">Prescription:</h5>
                           <ul className="text-sm text-gray-300 space-y-1 mb-3">
                             <li>• Cognitive Behavioral Therapy (Weekly sessions)</li>
                             <li>• Mindfulness exercises (Daily practice)</li>
                           </ul>
-                          
                           <h5 className="text-sm font-medium mb-1">Notes:</h5>
                           <p className="text-sm text-gray-300">
                             Patient shows improvement with breathing techniques. Recommended to continue therapy and monitor symptoms.
@@ -492,7 +588,7 @@ const PatientDashboard = () => {
                           <div className="flex justify-between items-center">
                             <div>
                               <h4 className="font-medium">Dr. Priya Sharma</h4>
-                              <p className="text-sm text-gray-400">April 28, 2023 • In-Person</p>
+                              <p className="text-sm text-gray-400">April 28, 2023</p>
                             </div>
                             <span className="px-2 py-1 rounded text-xs bg-green-900 text-green-300">
                               Completed
@@ -502,7 +598,6 @@ const PatientDashboard = () => {
                         <CardContent className="p-4 pt-0">
                           <h5 className="text-sm font-medium mb-1">Diagnosis:</h5>
                           <p className="text-sm text-gray-300 mb-3">Mild Depression</p>
-                          
                           <h5 className="text-sm font-medium mb-1">Recommendations:</h5>
                           <ul className="text-sm text-gray-300 space-y-1">
                             <li>• Regular physical activity</li>
@@ -679,7 +774,7 @@ const PatientDashboard = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label className="text-gray-300">Change Password</Label>
                       <div className="space-y-3">
@@ -691,7 +786,7 @@ const PatientDashboard = () => {
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="pt-4 border-t border-neutral-700">
                       <Button 
                         variant="destructive" 
@@ -705,12 +800,12 @@ const PatientDashboard = () => {
                               <Button variant="destructive" size="sm" onClick={() => {}}>
                                 Delete
                               </Button>
-                            )
+                            ),
                           });
                         }}
                       >
                         Delete Account
-                         </Button>
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
