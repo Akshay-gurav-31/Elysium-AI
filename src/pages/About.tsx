@@ -22,7 +22,8 @@ const teamMembers = [
     role: "AI/ML Engineer",
     initials: "VM",
     description: "Develops our AI triage system and machine learning models for mental health assessment.",
-    image: "/img/team/vardhan.jpg",
+    image: "/public/images/team/vardhan.jpg",
+    
     social: {
       linkedin: "https://linkedin.com/in/vardhan-m",
       github: "https://github.com/vardhan-m"
