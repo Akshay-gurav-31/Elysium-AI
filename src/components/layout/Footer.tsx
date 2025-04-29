@@ -38,7 +38,7 @@ const Footer = () => {
     { to: "/", label: "Home" },
     { to: "/about", label: "About Us" },
     { to: "/services", label: "Services" },
-    { to: "/contact", label: "ct" },
+    { to: "/contact", label: "contact" },
   ];
 
   const services = [
