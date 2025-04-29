@@ -220,7 +220,7 @@ const Footer = () => {
               </p>
               <div className="flex items-center">
                 <img
-                  src="public/images/ui/partner.png"
+                  src="/images/ui/partner.png"
                   alt="Partner Logo"
                   className="w-60 h-auto"
                 />
