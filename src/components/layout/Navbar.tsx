@@ -123,7 +123,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <Link
-                  to={userType === "doctor" ? "/doctor-dashboard" : "/patient-dashboard"} // Use lowercase route to match App.tsx
+                  to={userType === "doctor" ? "/DoctorDashboard" : "/PatientDashboard"} // Use lowercase route to match App.tsx
                   className="flex items-center space-x-2 text-blue-100 hover:text-white transition-colors"
                 >
                   <div className="w-8 h-8 rounded-full bg-blue-900 bg-opacity-40 flex items-center justify-center border border-blue-800/30">
@@ -218,7 +218,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="flex flex-col space-y-3 pt-2 border-t border-blue-900 mt-2">
                 <Link
-                  to={userType === "doctor" ? "/doctor-dashboard" : "/patient-dashboard"} // Use lowercase route to match App.tsx
+                  to={userType === "doctor" ? "/DoctorDashboard" : "/PatientDashboard"} // Use lowercase route to match App.tsx
                   className="flex items-center space-x-3 py-2 px-3 text-blue-100 hover:bg-blue-900 hover:bg-opacity-20 rounded-lg"
                 >
                   <div className="w-8 h-8 rounded-full bg-blue-900 bg-opacity-40 flex items-center justify-center border border-blue-800/30">
