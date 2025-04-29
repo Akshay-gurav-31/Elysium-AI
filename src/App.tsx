@@ -18,6 +18,7 @@ import PatientDashboard from "./pages/PatientDashboard";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+
 const queryClient = new QueryClient();
 
 // Router guard component to redirect based on user type
@@ -31,10 +32,10 @@ const RoleBasedRedirect = () => {
   const userType = user?.type;
 
   if (userType === "doctor") {
-    return <Navigate to="/doctor-dashboard" replace />;
+    return <Navigate to="/DoctorDashboard" replace />;
   }
   
-  return <Navigate to="/patient-dashboard" replace />;
+  return <Navigate to="/PatientDashboard" replace />;
 };
 
 const App = () => (
@@ -56,7 +57,7 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             
             {/* Protected patient routes */}
-            <Route path="/patient-dashboard" element={
+            <Route path="/PatientDashboard" element={
               <ProtectedRoute requiredUserType="patient">
                 <PatientDashboard />
               </ProtectedRoute>
@@ -68,7 +69,7 @@ const App = () => (
             } />
             
             {/* Protected doctor routes */}
-            <Route path="/doctor-dashboard" element={
+            <Route path="/DoctorDashboard" element={
               <ProtectedRoute requiredUserType="doctor">
                 <DoctorDashboard />
               </ProtectedRoute>
