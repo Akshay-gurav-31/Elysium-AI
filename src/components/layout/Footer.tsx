@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
               <img
-                src="src/img/logo.png"
+                src="public/images/ui/logo.png"
                 alt="Elysium AI Logo"
                 className="w-8 h-8"
               />
@@ -220,7 +220,7 @@ const Footer = () => {
               </p>
               <div className="flex items-center">
                 <img
-                  src="src/img/partner.png"
+                  src="public/images/ui/partner.png"
                   alt="Partner Logo"
                   className="w-60 h-auto"
                 />
