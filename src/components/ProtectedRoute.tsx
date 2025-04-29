@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredUserType?: "doctor" | "patient";
+  requiredUserType?: "doctor" | "patient" | ("doctor" | "patient")[];
 }
 
 const ProtectedRoute = ({ children, requiredUserType }: ProtectedRouteProps) => {
@@ -16,14 +16,20 @@ const ProtectedRoute = ({ children, requiredUserType }: ProtectedRouteProps) => 
   }
 
   // If a specific user type is required, check if the user has that type
-  if (requiredUserType && user?.type !== requiredUserType) {
-    // Redirect doctors to their dashboard if they try to access patient routes
-    if (user?.type === "doctor") {
-      return <Navigate to="/doctor-dashboard" replace />;
-    }
+  if (requiredUserType) {
+    const isUserTypeAllowed = Array.isArray(requiredUserType) 
+      ? requiredUserType.includes(user?.type as "doctor" | "patient")
+      : user?.type === requiredUserType;
     
-    // Redirect patients to their dashboard if they try to access doctor routes
-    return <Navigate to="/patient-dashboard" replace />;
+    if (!isUserTypeAllowed) {
+      // Redirect doctors to their dashboard if they try to access patient routes
+      if (user?.type === "doctor") {
+        return <Navigate to="/DoctorDashboard" replace />;
+      }
+      
+      // Redirect patients to their dashboard if they try to access doctor routes
+      return <Navigate to="/PatientDashboard" replace />;
+    }
   }
 
   return <>{children}</>;

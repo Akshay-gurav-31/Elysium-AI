@@ -78,7 +78,7 @@ const App = () => (
             
             {/* Video call route - accessible by both doctors and patients */}
             <Route path="/video-call" element={
-              <ProtectedRoute requiredUserType={["doctor", "patient"]}>
+              <ProtectedRoute requiredUserType={["doctor", "patient"] as "doctor" | "patient"}>
                 <VideoCall />
               </ProtectedRoute>
             } />
