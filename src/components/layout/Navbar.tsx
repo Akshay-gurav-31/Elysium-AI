@@ -42,8 +42,8 @@ const Navbar = () => {
   return (
     <nav className={cn(
       "sticky top-0 z-50 transition-all duration-300",
-      scrolled 
-        ? "bg-gradient-to-r from-black to-blue-950 shadow-lg" 
+      scrolled
+        ? "bg-gradient-to-r from-black to-blue-950 shadow-lg"
         : "bg-gradient-to-r from-black via-blue-950 to-black"
     )}>
       <div className="container mx-auto py-4 px-4">
@@ -52,9 +52,10 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="w-10 h-10 flex items-center justify-center bg-blue-900 bg-opacity-20 rounded-full p-1 backdrop-blur-sm transition-all duration-300 group-hover:bg-opacity-30 border border-blue-800/30">
               <img
-                src={logo}
+                src="/images/ui/logo.png"
                 alt="Elysium AI Logo"
                 className="w-full h-full object-contain"
+
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                   // Show fallback "E" if image fails to load
@@ -80,13 +81,13 @@ const Navbar = () => {
               { path: "/tracker", label: "Tracker" }, // Lowercase to match App.tsx
               { path: "/about", label: "About" },
             ].map((item) => (
-              <Link 
+              <Link
                 key={item.path}
-                to={item.path} 
+                to={item.path}
                 className={cn(
                   "relative py-1 font-medium transition-colors",
-                  isActive(item.path) 
-                    ? "text-white" 
+                  isActive(item.path)
+                    ? "text-white"
                     : "text-blue-200 hover:text-white"
                 )}
               >
@@ -97,14 +98,14 @@ const Navbar = () => {
                 )}></span>
               </Link>
             ))}
-            
+
             {(!isAuthenticated || userType === "patient") && (
-              <Link 
-                to="/chatbot" 
+              <Link
+                to="/chatbot"
                 className={cn(
                   "relative py-1 font-medium transition-colors",
-                  isActive("/chatbot") 
-                    ? "text-white" 
+                  isActive("/chatbot")
+                    ? "text-white"
                     : "text-blue-200 hover:text-white"
                 )}
               >
@@ -142,15 +143,15 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     className="border border-blue-800 bg-black bg-opacity-40 hover:bg-blue-900 text-blue-100 hover:text-white transition-all"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link to="/signup">
-                  <Button 
+                  <Button
                     className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-700 hover:to-blue-800 text-white transition-all shadow-md hover:shadow-lg"
                   >
                     Sign Up
@@ -186,34 +187,34 @@ const Navbar = () => {
               { path: "/tracker", label: "Tracker" }, // Lowercase to match App.tsx
               { path: "/about", label: "About" },
             ].map((item) => (
-              <Link 
+              <Link
                 key={item.path}
-                to={item.path} 
+                to={item.path}
                 className={cn(
                   "py-2 px-3 rounded-lg transition-all",
-                  isActive(item.path) 
-                    ? "bg-blue-900 bg-opacity-40 text-white border-l-2 border-blue-500" 
+                  isActive(item.path)
+                    ? "bg-blue-900 bg-opacity-40 text-white border-l-2 border-blue-500"
                     : "text-blue-200 hover:bg-blue-900 hover:bg-opacity-20 hover:text-white hover:border-l-2 hover:border-blue-700"
                 )}
               >
                 {item.label}
               </Link>
             ))}
-            
+
             {(!isAuthenticated || userType === "patient") && (
-              <Link 
-                to="/chatbot" 
+              <Link
+                to="/chatbot"
                 className={cn(
                   "py-2 px-3 rounded-lg transition-all",
-                  isActive("/chatbot") 
-                    ? "bg-blue-900 bg-opacity-40 text-white border-l-2 border-blue-500" 
+                  isActive("/chatbot")
+                    ? "bg-blue-900 bg-opacity-40 text-white border-l-2 border-blue-500"
                     : "text-blue-200 hover:bg-blue-900 hover:bg-opacity-20 hover:text-white hover:border-l-2 hover:border-blue-700"
                 )}
               >
                 AI Support
               </Link>
             )}
-            
+
             {isAuthenticated ? (
               <div className="flex flex-col space-y-3 pt-2 border-t border-blue-900 mt-2">
                 <Link
@@ -237,15 +238,15 @@ const Navbar = () => {
             ) : (
               <div className="flex flex-col space-y-3 pt-2 border-t border-blue-900 mt-2">
                 <Link to="/login" className="w-full">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     className="border border-blue-800 bg-black bg-opacity-40 hover:bg-blue-900 text-blue-100 hover:text-white transition-all w-full"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link to="/signup" className="w-full">
-                  <Button 
+                  <Button
                     className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-700 hover:to-blue-800 text-white transition-all shadow-md hover:shadow-lg w-full"
                   >
                     Sign Up
