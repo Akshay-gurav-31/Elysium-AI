@@ -46,7 +46,7 @@ const Services = () => {
             <div className="relative rounded-xl overflow-hidden order-1 md:order-2 border border-border group">
               <div className="aspect-w-16 aspect-h-9">
                 <img 
-                  src="src\img\bot.png"
+                  src="public\images\ui\bot.png"
                   alt="Woman using laptop for AI mental health chat" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -63,7 +63,7 @@ const Services = () => {
             <div className="relative rounded-xl overflow-hidden border border-border group">
               <div className="aspect-w-16 aspect-h-9">
                 <img 
-                  src="src/img/vid.png" 
+                  src="public/images/ui/vid.png" 
                   alt="Woman in virtual therapy session" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
