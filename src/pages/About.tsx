@@ -81,7 +81,7 @@ const About = () => {
                   playsInline
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 >
-                  <source src="public/videos/vid.mp4" />
+                  <source src="/videos/vid.mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
