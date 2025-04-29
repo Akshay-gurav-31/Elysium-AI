@@ -299,7 +299,7 @@ const Index = () => {
             <Card className="text-center hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-300 bg-navy-950 border border-blue-900">
               <CardHeader>
                 <Avatar className="w-24 h-24 mx-auto mb-4 ring-2 ring-blue-700 ring-offset-2 ring-offset-navy-950">
-                  <AvatarImage src="src/img/akshay.jpg" alt="Akshay Gurav" />
+                  <AvatarImage src="/images/team/akshay.jpg" alt="Akshay Gurav" />
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">AG</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Akshay Gurav</CardTitle>
@@ -330,7 +330,7 @@ const Index = () => {
             <Card className="text-center hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-300 bg-navy-950 border border-blue-900">
               <CardHeader>
                 <Avatar className="w-24 h-24 mx-auto mb-4 ring-2 ring-blue-700 ring-offset-2 ring-offset-navy-950">
-                  <AvatarImage src="src/img/sai.jpg" alt="Vardhan Mudhiraj" />
+                  <AvatarImage src="/images/team/sai.jpg" alt="Vardhan Mudhiraj" />
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">VM</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Vardhan Mudhiraj</CardTitle>
@@ -359,7 +359,7 @@ const Index = () => {
             <Card className="text-center hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-300 bg-navy-950 border border-blue-900">
               <CardHeader>
                 <Avatar className="w-24 h-24 mx-auto mb-4 ring-2 ring-blue-700 ring-offset-2 ring-offset-navy-950">
-                  <AvatarImage src="src/img/Shreyash.jpg" alt="Shreyash Kumar" />
+                  <AvatarImage src="/images/team/Shreyash.jpg" alt="Shreyash" />
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">SK</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Shreyash Kumar</CardTitle>
@@ -388,7 +388,7 @@ const Index = () => {
             <Card className="text-center hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-300 bg-navy-950 border border-blue-900">
               <CardHeader>
                 <Avatar className="w-24 h-24 mx-auto mb-4 ring-2 ring-blue-700 ring-offset-2 ring-offset-navy-950">
-                  <AvatarImage src="src/img/meghana.jpg" alt="Meghana Yegireddi" />
+                 <AvatarImage src="/images/team/meghana.jpg" alt="Meghana" />
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">MY</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Meghana Yegireddi</CardTitle>
