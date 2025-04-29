@@ -63,6 +63,62 @@ const Chatbot = () => {
   const recognitionRef = useRef<any>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+  // Add isHealthRelated function inside the component
+  const isHealthRelated = (message: string): boolean => {
+    const lowerMessage = message.toLowerCase();
+    return HEALTH_KEYWORDS.some(keyword => 
+      lowerMessage.includes(keyword.toLowerCase())
+    );
+  };
+
+  // Add handleTextWithGroq function inside the component to access messages state
+  const handleTextWithGroq = async (message: string) => {
+    // First check if the message is health-related
+    if (!isHealthRelated(message)) {
+      return "I'm sorry, I'm specialized in mental health topics. I can help with stress, anxiety, depression, or other mental health concerns. Could you tell me how you're feeling or what's on your mind?.";
+    }
+
+    try {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer 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"
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "system",
+              content: "You are a compassionate mental health assistant. Provide supportive responses. Always end your response with a single dot (.)"
+            },
+            ...messages.map(msg => ({
+              role: msg.sender === "user" ? "user" : "assistant",
+              content: msg.text
+            })),
+            {
+              role: "user",
+              content: message
+            }
+          ]
+        })
+      });
+      
+      const data = await response.json();
+      let responseText = data.choices[0].message.content;
+      
+      // Ensure the response ends with one dot
+      if (!responseText.trim().endsWith(".")) {
+        responseText = responseText.trim() + ".";
+      }
+      
+      return responseText;
+    } catch (error) {
+      console.error("Groq API error:", error);
+      return "I'm having trouble connecting right now. Please try again later..";
+    }
+  };
+
   // Initialize speech recognition
   useEffect(() => {
     const SpeechRecognition = (window as any).webkitSpeechRecognition;
@@ -137,55 +193,6 @@ const Chatbot = () => {
       return "I couldn't analyze the image properly. Could you describe what you need help with?..";
     }
   };
-
-  // Handle text messages with Groq Cloud (ends with one dot)
-  const handleTextWithGroq = async (message: string) => {
-    // First check if the message is health-related
-    if (!isHealthRelated(message)) {
-      return "I'm sorry, I'm specialized in mental health topics. I can help with stress, anxiety, depression, or other mental health concerns. Could you tell me how you're feeling or what's on your mind?.";
-    }
-
-    try {
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer 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"
-        },
-        body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
-          messages: [
-            {
-              role: "system",
-              content: "You are a compassionate mental health assistant. Provide supportive responses. Always end your response with a single dot (.)"
-            },
-            ...messages.map
-        (msg => ({
-            role: msg.sender === "user" ? "user" : "assistant",
-            content: msg.text
-          })),
-          {
-            role: "user",
-            content: message
-          }
-        ]
-      })
-    });
-    
-    const data = await response.json();
-    let responseText = data.choices[0].message.content;
-    
-    // Ensure the response ends with one dot
-    if (!responseText.trim().endsWith(".")) {
-      responseText = responseText.trim() + ".";
-    }
-    
-    return responseText;
-  } catch (error) {
-    console.error("Groq API error:", error);
-    return "I'm having trouble connecting right now. Please try again later..";
-  }
-};
 
   // Image compression
   const compressImage = async (file: File): Promise<string> => {
@@ -529,6 +536,7 @@ const Chatbot = () => {
     </MainLayout>
   );
 };
+
 // Add this function to check if message is health-related
 const isHealthRelated = (message: string): boolean => {
   const lowerMessage = message.toLowerCase();
