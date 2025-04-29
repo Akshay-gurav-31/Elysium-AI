@@ -16,7 +16,6 @@ import Shop from "./pages/Shop";
 import Chatbot from "./pages/Chatbot";
 import PatientDashboard from "./pages/PatientDashboard";
 import DoctorDashboard from "./pages/DoctorDashboard";
-import VideoCall from "./pages/VideoCall";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 
@@ -73,13 +72,6 @@ const App = () => (
             <Route path="/DoctorDashboard" element={
               <ProtectedRoute requiredUserType="doctor">
                 <DoctorDashboard />
-              </ProtectedRoute>
-            } />
-            
-            {/* Video call route - accessible by both doctors and patients */}
-            <Route path="/video-call" element={
-              <ProtectedRoute requiredUserType={["doctor", "patient"] as "doctor" | "patient"}>
-                <VideoCall />
               </ProtectedRoute>
             } />
             
