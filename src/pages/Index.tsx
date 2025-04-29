@@ -12,8 +12,9 @@ const Index = () => {
   const images = [
     "/images/doctors/dr.png",
     "/images/doctors/dr1.png",
-    "/images/doctors/dr2.jpg",
+    "/images/doctors/dr2.png",
     "/images/doctors/dr3.png",
+    "/images/doctors/dr4.png",
   ];
 
   // Effect for cycling through images every 20 seconds
