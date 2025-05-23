@@ -302,13 +302,13 @@ const Index = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">AG</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Akshay Gurav</CardTitle>
-                <CardDescription className="text-blue-300">Team Leader & Developer Lead</CardDescription>
+                <CardDescription className="text-blue-300">Team Leader & Full-Stack Developer</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Developed complete frontend and backend systems
-                  Conducted technical research and architecture design
-                  Coordinated team tasks.
+                  Led the Team (Leadership) || Executed End-to-End Frontend and Backend Development || Deployed the Web Application || Oversaw Research, Team Coordination, and UI/UX Design || Produced the Project Demonstration Video, etc...
+
+
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/akshay--gurav/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -333,13 +333,13 @@ const Index = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">VM</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Vardhan Mudhiraj</CardTitle>
-                <CardDescription className="text-blue-300">Database & Deployment Lead</CardDescription>
+                <CardDescription className="text-blue-300">Project Support Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Designed and optimized database structure
-                  Managed deployment
-                  Produced professional demo presentation
+                  Brainstormed with teammates || Contributed to idea discussions || Provided feedback || Supported project direction || Shared suggestions
+
+
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/sai-vardhan-ameenla/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -364,13 +364,13 @@ const Index = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">SS</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Shreyash Kumar</CardTitle>
-                <CardDescription className="text-blue-300">Backend Development Lead</CardDescription>
+                <CardDescription className="text-blue-300">Project Operations Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Designed robust backend architecture
-                  Implemented authentication and security measures
-                  Created API endpoints for client-server communication
+                  Idea Selection || Project Management || Visual Suggestions || Final Devofolio Submission|| Info Compilation & Updates ||including Basic works
+
+
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/shreyash-bhagat-sb-9774b622a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -395,13 +395,13 @@ const Index = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">MG</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Meghana Yegireddi </CardTitle>
-                <CardDescription className="text-blue-300">User Experience Lead</CardDescription>
+                <CardDescription className="text-blue-300">Creative & Content Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Led the design of an intuitive user experience
-                  Created comprehensive user personas
-                  Conducted user testing and gathered feedback
+
+                  Created the Logo Design || Selected Website Name||Explained Core Ideas on Website Functionality || Created  Project Presentation (PPT)
+
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/meghana-yegireddi-639280320/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
