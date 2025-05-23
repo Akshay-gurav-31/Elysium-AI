@@ -9,7 +9,7 @@ const teamMembers = [
     name: "Akshay Gurav",
     role: "Full Stack Developer",
     initials: "AG",
-    description: "Leads the development of our platform with expertise in React, Node.js, and cloud architecture.",
+    description: "Led the Team (Leadership) || Executed End-to-End Frontend and Backend Development || Deployed the Web Application || Oversaw Research, Team Coordination, and UI/UX Design || Produced the Project Demonstration Video, etc...",
     image: "/img/team/akshay.jpg",
     social: {
       linkedin: "https://linkedin.com/in/akshay-gurav",
@@ -21,7 +21,7 @@ const teamMembers = [
     name: "Vardhan Mudhiraj",
     role: "AI/ML Engineer",
     initials: "VM",
-    description: "Develops our AI triage system and machine learning models for mental health assessment.",
+    description: " Brainstormed with teammates || Contributed to idea discussions || Provided feedback || Supported project direction || Shared suggestions",
     image: "/public/images/team/vardhan.jpg",
 
     social: {
@@ -34,7 +34,7 @@ const teamMembers = [
     name: "Shreyash Kumar",
     role: "Product Manager",
     initials: "SK",
-    description: "Oversees product development and ensures our solutions meet user needs effectively.",
+    description: "Idea Selection || Project Management || Visual Suggestions || Final Devofolio Submission|| Info Compilation & Updates ||including Basic works.",
     image: "/img/team/shreyash.jpg",
     social: {
       linkedin: "https://linkedin.com/in/shreyash-k"
@@ -45,7 +45,7 @@ const teamMembers = [
     name: "Meghana Yegireddi",
     role: "UI/UX Designer",
     initials: "MY",
-    description: "Designs intuitive interfaces that make mental health support accessible to everyone.",
+    description: " Created the Logo Design || Selected Website Name||Explained Core Ideas on Website Functionality || Created  Project Presentation (PPT)",
     image: "/img/team/meghana.jpg",
     social: {
       linkedin: "https://linkedin.com/in/meghana-y"
@@ -201,11 +201,11 @@ const About = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">AG</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Akshay Gurav</CardTitle>
-                <CardDescription className="text-blue-300">Frontend & Backend Developer Lead</CardDescription>
+                <CardDescription className="text-blue-300">Team Leader & Full-Stack Developer</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Leading development of secure and effective mental health technologies with a full-stack approach.
+                  Led the Team (Leadership) || Executed End-to-End Frontend and Backend Development || Deployed the Web Application || Oversaw Research, Team Coordination, and UI/UX Design || Produced the Project Demonstration Video, etc...
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/akshay--gurav/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -230,11 +230,12 @@ const About = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">VM</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Vardhan Mudhiraj</CardTitle>
-                <CardDescription className="text-blue-300">Database & Deployment Lead</CardDescription>
+                <CardDescription className="text-blue-300">Project Support Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Specialized in database architecture and deployment solutions for healthcare applications.
+                  initials: "VM",
+                  Brainstormed with teammates || Contributed to idea discussions || Provided feedback || Supported project direction || Shared suggestions.
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/sai-vardhan-ameenla/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -259,11 +260,11 @@ const About = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">SK</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Shreyash Kumar</CardTitle>
-                <CardDescription className="text-blue-300">Presentation & Teaser Lead</CardDescription>
+                <CardDescription className="text-blue-300">Project Operations Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Leading presentation strategies with a passion for creating impactful mental healthcare narratives.
+                  Idea Selection || Project Management || Visual Suggestions || Final Devofolio Submission|| Info Compilation & Updates ||including Basic works.
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/shreyash-bhagat-sb-9774b622a/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -288,11 +289,11 @@ const About = () => {
                   <AvatarFallback className="bg-gradient-to-br from-blue-800 to-blue-600 text-white text-2xl">MY</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-white">Meghana Yegireddi</CardTitle>
-                <CardDescription className="text-blue-300">UI/UX Design Lead</CardDescription>
+                <CardDescription className="text-blue-300">Creative & Content Lead</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-blue-100 mb-3">
-                  Creating intuitive and user-centered designs for mental health applications with focus on accessibility.
+                  Created the Logo Design || Selected Website Name||Explained Core Ideas on Website Functionality || Created  Project Presentation (PPT).
                 </p>
                 <div className="flex justify-center mt-4 space-x-3">
                   <a href="https://www.linkedin.com/in/meghana-yegireddi-639280320/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
@@ -317,5 +318,3 @@ const About = () => {
 };
 
 export default About;
-
-
